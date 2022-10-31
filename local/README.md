@@ -13,3 +13,4 @@ File | Description
 ## **Local [Flask](https://flask.palletsprojects.com) server (Python 3)**
 
 1. **Run** `python main.py` to run on local Flask server 
+2. **Navigate** to http://localhost:8080/ in your browser

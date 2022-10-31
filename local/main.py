@@ -3,9 +3,12 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 
 
-@app.route('/')
-def hello():
-    return 'Hello, World!'
+@app.route('/', methods = ['GET', 'POST'])
+def upload_image():
+    return render_template('index.html')
+
+#def hello():
+#    return 'Hello, World!'
 
 if __name__ == '__main__':
     import os
