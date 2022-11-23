@@ -3,4 +3,5 @@ flask==2.2.2
 matplotlib==3.5.3 
 numpy==1.21.5
 opencv-contrib-python==4.6.0.66
+pillow==9.3.0
 streamlit==1.15.0
