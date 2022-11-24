@@ -12,7 +12,9 @@ This repository hosts the code for the demo app
 The codebase is hosted in the following branch:
 
 
-- `dev-python/main` — this branch contains the Python pre-production code
+- `dev-python/main/local` — this branch contains the code to host the app on the local machine
+- `dev-python/main/cloud` — this branch contains the code to host the app on the cloud server
+
 
 
 <p>&nbsp;</p>

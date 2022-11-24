@@ -4,13 +4,11 @@ import cv2
 from  PIL import Image
 st.set_page_config(layout="wide")
 
+
 def main():
 
     st.title("👋 Hello")
     st.subheader("This is the relevant region detection demo")
-
-
-
 
     st.subheader("Upload your photo")
     uploaded_file = st.file_uploader("", type=['jpg','png','jpeg']) # To upload the photo
