@@ -1,13 +1,7 @@
 import cv2
 import os
-
-
-# import parameters
-
-input_image = "assets/IMG_0065.jpeg"
-image_name = os.path.split(input_image)[-1].split('.')[0]
-
-print(image_name)
+from  PIL import Image, ImageOps
+import numpy as np
 
 
 
@@ -23,9 +17,13 @@ def create_threshold_image(input_image):
         threshold_map (np.array): threshold image array with binary values
     '''
     # read the image as a greyscale image
-    image_grey = cv2.imread(input_image, cv2.IMREAD_GRAYSCALE)
+    image = Image.open(input_image)
+    image_grey = ImageOps.grayscale(image)
+    image_grey = np.array(image_grey)
+    #image_grey = cv2.imread(input_image, cv2.IMREAD_GRAYSCALE)
+    
     # save the greyscale image
-    cv2.imwrite(os.path.join(output_dir, "".join([image_name, ".png"])), image_grey)
+    #cv2.imwrite(os.path.join(output_dir, "".join([image_name, ".png"])), image_grey)
     # blur the image to reduce noise
     image_blurred = cv2.GaussianBlur(image_grey,(5,5),0)
     # create the saliency map
@@ -34,8 +32,9 @@ def create_threshold_image(input_image):
     saliency_map = (saliency_map * 255).astype("uint8")
     # create the threshold map based on adaptive thresholding
     threshold_value, threshold_map = cv2.threshold(saliency_map, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+    
     # save the threshold map
-    cv2.imwrite(os.path.join(output_dir, "".join([image_name, "_threshold_map_v1.png"])), threshold_map)
+    #cv2.imwrite(os.path.join(output_dir, "".join([image_name, "_threshold_map_v1.png"])), threshold_map)
     return threshold_map
 
 
