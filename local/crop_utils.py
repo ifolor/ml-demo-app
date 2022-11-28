@@ -12,11 +12,11 @@ def create_threshold_image(image):
     Creates a threshold image from the input image where the white regions
     correspond to the regions with high saliency values
     Parameters:
-        input_image (PIL.Image object): PIL.Image object from the uploaded file
+        image (PIL.Image object): PIL.Image object from the uploaded file
     Returns:
         threshold_map (np.array): threshold image array with binary values
     '''
-    # read the image as a greyscale image
+    # read the image as a greyscale image and convert into an array
     image_grey = ImageOps.grayscale(image)
     image_grey = np.array(image_grey)
     #image_grey = cv2.imread(input_image, cv2.IMREAD_GRAYSCALE)
@@ -54,27 +54,27 @@ def ignore_small_contours(threshold_map, min_fraction=0.01):
 
 
 
-def crop_image(input_image, threshold_map):
+def crop_image(image, threshold_map):
     '''
     Crops the input image based on the threshold map
     Parameters:
-        input_image (str): input image path
+        image (PIL.Image object): PIL.Image object from the uploaded file
         threshold_map (np.array): threshold image array with binary values
     '''
+    image = np.array(image)
     # draw the bounding rectangle to encapsulate all contours detected in the threshold map
-    image = cv2.imread(input_image)
     start_x, start_y, width, height = cv2.boundingRect(threshold_map)
     cropped_image = image[start_y:start_y+height,  start_x:start_x+width]
-    cv2.imwrite(os.path.join(output_dir, "".join([image_name, "_cropped.png"])), cropped_image)
+    #cv2.imwrite(os.path.join(output_dir, "".join([image_name, "_cropped.png"])), cropped_image)
 
     # draw the rectangle on the original image
     start_vertex = (start_x, start_y)
     end_vertex = (start_x+width, start_y+height)
     colour = (232, 254, 199)
-    thickness = 3
-    rectangle_img = cv2.rectangle(image, start_vertex, end_vertex, colour, thickness)
-    cv2.imwrite(os.path.join(output_dir, "".join([image_name, "_bounding_rect.png"])), rectangle_img)
-    return 
+    thickness = 30
+    rectangle_image = cv2.rectangle(image, start_vertex, end_vertex, colour, thickness)
+    #cv2.imwrite(os.path.join(output_dir, "".join([image_name, "_bounding_rect.png"])), rectangle_iamge)
+    return rectangle_image
 
 #def main():
 #    threshold_map = create_threshold_image(input_image)
