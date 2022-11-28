@@ -2,6 +2,7 @@
 assets/**
 out_dir/**
 out/**
+local/output_test/**
 
 # Virtual environment
 env/**

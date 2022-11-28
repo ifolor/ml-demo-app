@@ -4,9 +4,6 @@ from  PIL import Image, ImageOps
 import numpy as np
 
 
-
-
-
 def create_threshold_image(image):
     '''
     Creates a threshold image from the input image where the white regions
@@ -16,11 +13,9 @@ def create_threshold_image(image):
     Returns:
         threshold_map (np.array): threshold image array with binary values
     '''
-    # read the image as a greyscale image and convert into an array
+    # read the image as a greyscale image and convert it into an array
     image_grey = ImageOps.grayscale(image)
     image_grey = np.array(image_grey)
-    #image_grey = cv2.imread(input_image, cv2.IMREAD_GRAYSCALE)
-
     # blur the image to reduce noise
     image_blurred = cv2.GaussianBlur(image_grey,(5,5),0)
     # create the saliency map
@@ -52,8 +47,6 @@ def ignore_small_contours(threshold_map, min_fraction=0.01):
     return threshold_map
 
 
-
-
 def crop_image(image, threshold_map):
     '''
     Crops the input image based on the threshold map
@@ -64,23 +57,13 @@ def crop_image(image, threshold_map):
     image = np.array(image)
     # draw the bounding rectangle to encapsulate all contours detected in the threshold map
     start_x, start_y, width, height = cv2.boundingRect(threshold_map)
+    # crop the image based on the bounding rectangle
     cropped_image = image[start_y:start_y+height,  start_x:start_x+width]
-    #cv2.imwrite(os.path.join(output_dir, "".join([image_name, "_cropped.png"])), cropped_image)
-
     # draw the rectangle on the original image
     start_vertex = (start_x, start_y)
     end_vertex = (start_x+width, start_y+height)
     colour = (232, 254, 199)
     thickness = 30
     rectangle_image = cv2.rectangle(image, start_vertex, end_vertex, colour, thickness)
-    #cv2.imwrite(os.path.join(output_dir, "".join([image_name, "_bounding_rect.png"])), rectangle_iamge)
-    return rectangle_image
+    return rectangle_image, cropped_image
 
-#def main():
-#    threshold_map = create_threshold_image(input_image)
-#    threshold_map = ignore_small_contours(threshold_map, min_fraction=0.01)
-#    crop_image(input_image, threshold_map)
-
-
-#if __name__ == "__main__":
-#    main()
