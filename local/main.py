@@ -5,16 +5,17 @@ from  PIL import Image
 from crop_utils import create_threshold_image, ignore_small_contours, crop_image
 st.set_page_config(layout="wide")
 
+st.write('<style>div.block-container{padding-top:-20rem;}</style>', unsafe_allow_html=True)
+st.markdown(""" <style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+</style> """, unsafe_allow_html=True)
 
 
-def main():
 
-    st.title("👋 Hello")
-    st.subheader("This is the relevant region detection demo. Please upload an image to get started.")
-
-    uploaded_file = st.file_uploader("", type=['jpg','png','jpeg']) # To upload the photo
+def show_images():
+    uploaded_file = st.file_uploader("", type=['jpg','png','jpeg']) 
     if uploaded_file is not None:
-        print(uploaded_file)
         image = Image.open(uploaded_file)
         saliency_map, threshold_map = create_threshold_image(image)
         threshold_map_exclude_small_contours = ignore_small_contours(threshold_map)
@@ -40,14 +41,27 @@ def main():
 
         with col_5:
             st.markdown('<p style="text-align: center;">Cropped image</p>',unsafe_allow_html=True)
-            st.image(cropped_image)       
+            st.image(cropped_image) 
+
+
+
+st.title("👋 Hello")
+st.subheader("Please select which feature you want to test.")
+
+features = ["Crop hints", "Dominant colors"]
+page = st.radio("", features)
+
+
+if page == "Crop hints":
+    show_images()
+
+
+
+
+
+   
 
 
             #filter = st.sidebar.radio('Any desired aspect ratio (width-to-height)?', ['None','1:1','4:3', '4:5', '16:9'])
             #if filter == 'None':
 
-
-
-
-if __name__ == "__main__":
-    main()

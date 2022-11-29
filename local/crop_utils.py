@@ -54,16 +54,16 @@ def crop_image(image, threshold_map):
         image (PIL.Image object): PIL.Image object from the uploaded file
         threshold_map (np.array): threshold image array with binary values
     '''
-    image = np.array(image)
+    image_array = np.array(image)
     # draw the bounding rectangle to encapsulate all contours detected in the threshold map
     start_x, start_y, width, height = cv2.boundingRect(threshold_map)
     # crop the image based on the bounding rectangle
-    cropped_image = image[start_y:start_y+height,  start_x:start_x+width]
+    cropped_image = image_array[start_y:start_y+height,  start_x:start_x+width]
     # draw the rectangle on the original image
     start_vertex = (start_x, start_y)
     end_vertex = (start_x+width, start_y+height)
     colour = (232, 254, 199)
     thickness = 30
-    rectangle_image = cv2.rectangle(image, start_vertex, end_vertex, colour, thickness)
+    rectangle_image = cv2.rectangle(image_array, start_vertex, end_vertex, colour, thickness)
     return rectangle_image, cropped_image
 

@@ -48,3 +48,12 @@ vim ~/.zshrc
 export C_INCLUDE_PATH=/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.8/Headers
 source ~/.zshrc
 ```
+
+## Customize the Streamlit UI
+Create a **.streamlit** folder in your repository and add the theme specifications:
+    
+```bash
+vim .streamlit/config.toml
+```
+
+Many configurations options are available [here](https://docs.streamlit.io/library/advanced-features/configuration).
