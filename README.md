@@ -55,5 +55,6 @@ Create a **.streamlit** folder in your repository and add the theme specificatio
 ```bash
 vim .streamlit/config.toml
 ```
+![Alt text](public_assets/image_1.png?raw=true "Title")
 
 Many configurations options are available [here](https://docs.streamlit.io/library/advanced-features/configuration).
