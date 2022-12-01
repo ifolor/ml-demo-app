@@ -54,6 +54,13 @@ page = st.radio("", features)
 
 if page == "Crop hints":
     show_images()
+elif page == "Dominant colors":
+    col_1, col_2 = st.columns([1, 2])
+    with col_1:
+        number_of_colors = st.select_slider(
+        'How many dominant colors do you want to extract from your image?',
+    options=['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'])
+    
 
 
 
