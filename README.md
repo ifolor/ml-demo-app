@@ -19,7 +19,7 @@ The codebase is hosted in the following branch:
 
 <p>&nbsp;</p>
 
-## Python branch setup
+## Branch setup
 
 Create an isolated Python environment:
 ```python
@@ -34,7 +34,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-**Installign Streamlit:** If you do get an [error](https://stackoverflow.com/questions/73512185/error-could-not-build-wheels-for-backports-zoneinfo-error-while-installing-dja) `Could not build wheels for backports.zoneinfo`
+**Installing Streamlit:** If you do get an [error](https://stackoverflow.com/questions/73512185/error-could-not-build-wheels-for-backports-zoneinfo-error-while-installing-dja) `Could not build wheels for backports.zoneinfo`
 while installing `streamlit`, run the following command:
 
 ```bash
@@ -51,11 +51,8 @@ source ~/.zshrc
 
 ## Run the Streamlit app
 
-From your terminal, run:
-```bash
-streamlit run local/main.py
-```
-and the app should open in a new tab in your default browser.
+1. **Run** `streamlit run main.py` from your terminal to deploy the app on local Streamlit server 
+2. **Navigate** to http://localhost:8501/ in your browser
 
 ## Customize the Streamlit UI
 Create a **.streamlit** folder in your repository and add the theme specifications:
