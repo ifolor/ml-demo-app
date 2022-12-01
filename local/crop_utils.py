@@ -62,8 +62,8 @@ def crop_image(image, threshold_map):
     # draw the rectangle on the original image
     start_vertex = (start_x, start_y)
     end_vertex = (start_x+width, start_y+height)
-    colour = (232, 254, 199)
-    thickness = 30
+    colour = (238, 40, 103)
+    thickness = 50
     rectangle_image = cv2.rectangle(image_array, start_vertex, end_vertex, colour, thickness)
     return rectangle_image, cropped_image
 
