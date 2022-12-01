@@ -12,8 +12,8 @@ This repository hosts the code for the demo app
 The codebase is hosted in the following branch:
 
 
-- `dev/main/local` — this branch contains the code to host the app on the local machine
-- `dev/main/cloud` — this branch contains the code to host the app on the cloud server
+- `dev/main` — this branch contains the code to host the demo app on the local Streamlit server
+- `dev/gcp_crop_hints` — this branch contains the code to use the GCP crop hints service
 
 
 
