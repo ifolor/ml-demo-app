@@ -4,18 +4,15 @@ from  PIL import Image, ImageOps
 import numpy as np
 
 
-def create_threshold_image(image):
+def create_threshold_image(image_grey):
     '''
     Creates a threshold image from the input image where the white regions
     correspond to the regions with high saliency values
     Parameters:
-        image (PIL.Image object): PIL.Image object from the uploaded file
+        image_grey (np.array): grey image array
     Returns:
         threshold_map (np.array): threshold image array with binary values
     '''
-    # read the image as a greyscale image and convert it into an array
-    image_grey = ImageOps.grayscale(image)
-    image_grey = np.array(image_grey)
     # blur the image to reduce noise
     image_blurred = cv2.GaussianBlur(image_grey,(5,5),0)
     # create the saliency map
@@ -51,19 +48,18 @@ def crop_image(image, threshold_map):
     '''
     Crops the input image based on the threshold map
     Parameters:
-        image (PIL.Image object): PIL.Image object from the uploaded file
+        image (np.array): image array
         threshold_map (np.array): threshold image array with binary values
     '''
-    image_array = np.array(image)
     # draw the bounding rectangle to encapsulate all contours detected in the threshold map
     start_x, start_y, width, height = cv2.boundingRect(threshold_map)
     # crop the image based on the bounding rectangle
-    cropped_image = image_array[start_y:start_y+height,  start_x:start_x+width]
+    cropped_image = image[start_y:start_y+height,  start_x:start_x+width]
     # draw the rectangle on the original image
     start_vertex = (start_x, start_y)
     end_vertex = (start_x+width, start_y+height)
     colour = (238, 40, 103)
-    thickness = 50
-    rectangle_image = cv2.rectangle(image_array, start_vertex, end_vertex, colour, thickness)
+    thickness = int(0.02*min(image.shape[0], image.shape[1]))
+    rectangle_image = cv2.rectangle(image, start_vertex, end_vertex, colour, thickness)
     return rectangle_image, cropped_image
 

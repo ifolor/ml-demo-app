@@ -14,34 +14,45 @@ footer {visibility: hidden;}
 
 
 def show_images():
-    uploaded_file = st.file_uploader("", type=['jpg','png','jpeg']) 
-    if uploaded_file is not None:
-        image = Image.open(uploaded_file)
-        saliency_map, threshold_map = create_threshold_image(image)
-        threshold_map_exclude_small_contours = ignore_small_contours(threshold_map)
-        rectangle_image, cropped_image = crop_image(image, threshold_map_exclude_small_contours)
+    col_1, col_2 = st.columns([1, 1])
+    with col_1:
+        uploaded_files = st.file_uploader("", type=['jpg','png','jpeg'], accept_multiple_files=True)
+
+    if uploaded_files is not None:
+        for uploaded_file in uploaded_files:
+        # Convert the file to an opencv image.
+            file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+            image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+            image_copy = image.copy()
+            image_grey = cv2.imdecode(file_bytes, cv2.IMREAD_GRAYSCALE)
+
+        
+            saliency_map, threshold_map = create_threshold_image(image_grey)
+            threshold_map_exclude_small_contours = ignore_small_contours(threshold_map)
+            rectangle_image, cropped_image = crop_image(image_copy, threshold_map_exclude_small_contours)
 
     
-        col_1, col_2, col_3, col_4, col_5 = st.columns(np.ones(5)*0.2)
-        with col_1:
-            st.markdown('<p style="text-align: center;">Original image</p>',unsafe_allow_html=True)
-            st.image(image)  
+            col_1, col_2, col_3, col_4, col_5 = st.columns(np.ones(5)*0.2)
+            with col_1:
+                st.markdown('<p style="text-align: center;">Original image</p>',unsafe_allow_html=True)
+                st.image(image, channels="BGR")  
 
-        with col_2:
-            st.markdown('<p style="text-align: center;">Saliency map</p>',unsafe_allow_html=True)
-            st.image(saliency_map)  
+            with col_2:
+                st.markdown('<p style="text-align: center;">Saliency map</p>',unsafe_allow_html=True)
+                st.image(saliency_map)  
 
-        with col_3:
-            st.markdown('<p style="text-align: center;">Threshold map</p>',unsafe_allow_html=True)
-            st.image(threshold_map) 
+            with col_3:
+                st.markdown('<p style="text-align: center;">Threshold map</p>',unsafe_allow_html=True)
+                st.image(threshold_map) 
 
-        with col_4:
-            st.markdown('<p style="text-align: center;">Crop hints</p>',unsafe_allow_html=True)
-            st.image(rectangle_image)      
+            with col_4:
+                st.markdown('<p style="text-align: center;">Crop hints</p>',unsafe_allow_html=True)
+                st.image(rectangle_image, channels="BGR")      
 
-        with col_5:
-            st.markdown('<p style="text-align: center;">Cropped image</p>',unsafe_allow_html=True)
-            st.image(cropped_image) 
+            with col_5:
+                st.markdown('<p style="text-align: center;">Cropped image</p>',unsafe_allow_html=True)
+                st.image(cropped_image, channels="BGR") 
+      
 
 
 
