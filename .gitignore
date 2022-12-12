@@ -4,6 +4,9 @@ out_dir/**
 out/**
 local/output_test/**
 
+# App fredentials
+app/*.json
+
 # Virtual environment
 env/**
 
