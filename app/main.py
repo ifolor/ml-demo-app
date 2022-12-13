@@ -1,7 +1,6 @@
 import streamlit as st
 import numpy as np
 import cv2
-from  PIL import Image
 from crop_utils import create_threshold_image, ignore_small_contours, crop_image
 st.set_page_config(layout="wide")
 
