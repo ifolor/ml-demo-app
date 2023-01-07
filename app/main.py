@@ -1,20 +1,17 @@
 import streamlit as st
 import numpy as np
 import cv2
-import os
 from PIL import Image
 from google.cloud import vision
 from crop_utils import create_threshold_image, ignore_small_contours, crop_image
+from features.gcp_crop_hints import create_bounding_box, calculate_bounding_box_coords
+
 st.set_page_config(layout="wide")
 st.write('<style>div.block-container{padding-top:-20rem;}</style>', unsafe_allow_html=True)
 st.markdown(""" <style>
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
 </style> """, unsafe_allow_html=True)
-
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "369410-4d30b4b7a194.json"
-client = vision.ImageAnnotatorClient()
-
 
 
 st.title("👋 Hello")
@@ -23,41 +20,17 @@ st.subheader("Please select which feature you want to test.")
 uploaded_file = st.file_uploader("", type=['jpg','png','jpeg'])
 if uploaded_file is not None:
     image_bytes = uploaded_file.read()
-    image = vision.Image(content=image_bytes)
-    response = client.crop_hints(image=image)
-    hints = response.crop_hints_annotation.crop_hints
-    print(hints)
+    vertices, confidence, importance_fraction = create_bounding_box(image_bytes, aspect_ratio=16/9)
 
-    for n, hint in enumerate(hints):
-        print('\nCrop Hint: {}'.format(n))
-
-        vertices = (['({},{})'.format(vertex.x, vertex.y)
-                for vertex in hint.bounding_poly.vertices])
-
-        print('bounds: {}'.format(','.join(vertices)))
-        print(hint.confidence)
-        print(hint.importance_fraction)
+    print(vertices)
+    print(confidence)
+    print(importance_fraction)
         
 
+ 
+    start_x, start_y, width, height = calculate_bounding_box_coords(vertices)
 
 
-
-    #confidence = hints.confidence
-    #print(confidence)
-
-    print('bounds: {}'.format(','.join(vertices)))    
-    print(vertices) 
-    start_x = int(vertices[0].split(",")[0].replace('(', ''))
-    start_y = int(vertices[0].split(",")[1].replace(')', ''))
-    width = int(vertices[1].split(",")[0].replace('(', '')) - start_x
-    height = int(vertices[2].split(",")[1].replace(')', '')) - start_y
-    print(start_x, start_y, width, height)
-
-    start_x = int(vertices[0].split(",")[0].replace('(', ''))
-    start_y = int(vertices[0].split(",")[1].replace(')', ''))
-    width = int(vertices[1].split(",")[0].replace('(', '')) - start_x
-    height = int(vertices[2].split(",")[1].replace(')', '')) - start_y
-    print(start_x, start_y, width, height)
 
     image = Image.open(uploaded_file)
     image_copy = image.copy()
@@ -79,7 +52,7 @@ if uploaded_file is not None:
 
  
         st.markdown('<p style="text-align: center;">Original image</p>',unsafe_allow_html=True)
-        st.image(image, channels="BGR") 
+        st.image(image_copy, channels="BGR") 
         with col_4:
             st.markdown('<p style="text-align: center;">Crop hints</p>',unsafe_allow_html=True)
             st.image(rectangle_image, channels="BGR")      
@@ -87,3 +60,6 @@ if uploaded_file is not None:
         with col_5:
             st.markdown('<p style="text-align: center;">Cropped image</p>',unsafe_allow_html=True)
             st.image(cropped_image, channels="BGR") 
+
+
+
