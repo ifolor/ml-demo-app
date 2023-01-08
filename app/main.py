@@ -19,22 +19,15 @@ st.subheader("Please select which feature you want to test.")
 
 uploaded_file = st.file_uploader("", type=['jpg','png','jpeg'])
 if uploaded_file is not None:
+    print(type(uploaded_file))
     image_bytes = uploaded_file.read()
     vertices, confidence, importance_fraction = create_bounding_box(image_bytes, aspect_ratio=16/9)
-
-    print(vertices)
-    print(confidence)
-    print(importance_fraction)
-        
-
- 
     start_x, start_y, width, height = calculate_bounding_box_coords(vertices)
 
 
 
     image = Image.open(uploaded_file)
-    image_copy = image.copy()
-    image_array = np.asarray(image_copy)
+    image_array = np.asarray(image)
         # crop the image based on the bounding rectangle
     cropped_image = image_array[start_y:start_y+height,  start_x:start_x+width]
         # draw the rectangle on the original image
@@ -52,14 +45,14 @@ if uploaded_file is not None:
 
  
         st.markdown('<p style="text-align: center;">Original image</p>',unsafe_allow_html=True)
-        st.image(image_copy, channels="BGR") 
+        st.image(image, channels="BGR") 
         with col_4:
             st.markdown('<p style="text-align: center;">Crop hints</p>',unsafe_allow_html=True)
-            st.image(rectangle_image, channels="BGR")      
+            st.image(rectangle_image, channels="RGB")      
 
         with col_5:
             st.markdown('<p style="text-align: center;">Cropped image</p>',unsafe_allow_html=True)
-            st.image(cropped_image, channels="BGR") 
+            st.image(cropped_image, channels="RGB") 
 
 
 

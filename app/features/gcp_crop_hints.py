@@ -4,18 +4,18 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "369410-4d30b4b7a194.json"
 
 client = vision.ImageAnnotatorClient()
 
-def create_bounding_box(image_bytes, aspect_ratio=16/9):
+def create_bounding_box(image_bytes, aspect_ratio=None):
 
     image = vision.Image(content=image_bytes)
-    crop_hints_params = vision.CropHintsParams(aspect_ratios=[aspect_ratio])
-    image_context = vision.ImageContext(crop_hints_params=crop_hints_params)
-
-    response = client.crop_hints(image=image, image_context=image_context)
+    if aspect_ratio is None:
+        response = client.crop_hints(image=image)
+    else:
+        crop_hints_params = vision.CropHintsParams(aspect_ratios=[aspect_ratio])
+        image_context = vision.ImageContext(crop_hints_params=crop_hints_params)
+        response = client.crop_hints(image=image, image_context=image_context)
+    
     hints = response.crop_hints_annotation.crop_hints
-
     for n, hint in enumerate(hints):
-
-
         vertices = (['({},{})'.format(vertex.x, vertex.y)
                 for vertex in hint.bounding_poly.vertices])
     return vertices, hint.confidence, hint.importance_fraction
