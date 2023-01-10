@@ -1,10 +1,12 @@
 import streamlit as st
 import numpy as np
 import cv2
-from  PIL import Image
+from PIL import Image
+from google.cloud import vision
 from crop_utils import create_threshold_image, ignore_small_contours, crop_image
-st.set_page_config(layout="wide")
+from features.gcp_crop_hints import *
 
+st.set_page_config(layout="wide")
 st.write('<style>div.block-container{padding-top:-20rem;}</style>', unsafe_allow_html=True)
 st.markdown(""" <style>
 #MainMenu {visibility: hidden;}
@@ -13,7 +15,9 @@ footer {visibility: hidden;}
 
 
 
-def show_images():
+
+
+def show_images_opencv():
     col_1, col_2 = st.columns([1, 1])
     with col_1:
         uploaded_files = st.file_uploader("", type=['jpg','png','jpeg'], accept_multiple_files=True)
@@ -64,7 +68,7 @@ page = st.radio("", features)
 
 
 if page == "Crop hints":
-    show_images()
+    show_images_opencv()
 elif page == "Dominant colors":
     col_1, col_2 = st.columns([1, 2])
     with col_1:
