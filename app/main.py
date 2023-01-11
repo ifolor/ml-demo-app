@@ -1,11 +1,8 @@
 import streamlit as st
 import numpy as np
 import cv2
-<<<<<<< HEAD
 from PIL import Image
 from google.cloud import vision
-=======
->>>>>>> 55e3e50b8dfc04ad3f2fcf3822f5d5ca2803dec3
 from crop_utils import create_threshold_image, ignore_small_contours, crop_image
 from features.gcp_crop_hints import *
 
